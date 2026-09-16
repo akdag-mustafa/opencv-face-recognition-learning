@@ -60,34 +60,6 @@ while True:
     # 255 = beyaz
 
 
-    blur = cv2.GaussianBlur(
-        gray,
-        (15, 15),
-        0
-    )
-    # Görüntüye Gaussian Blur uygular.
-    #
-    # Amaç:
-    # Görüntüdeki küçük detayları ve gürültüyü yumuşatmaktır.
-    #
-    # gray:
-    # Bulanıklaştırılacak görüntü.
-    #
-    # (15, 15):
-    # Kernel boyutudur.
-    # Her piksel hesaplanırken çevresindeki 15x15 bölge dikkate alınır.
-    #
-    # Kernel boyutu genellikle tek sayı olmalıdır:
-    # (3,3)
-    # (5,5)
-    # (15,15)
-    #
-    # Değer büyüdükçe görüntü daha fazla bulanıklaşır.
-    #
-    # Son parametre 0:
-    # Gaussian dağılımının sigma değerini OpenCV otomatik hesaplasın demektir.
-
-
     cv2.imshow("Orijinal", frame)
     # Bir pencere açar ve frame görüntüsünü gösterir.
     #
@@ -100,10 +72,6 @@ while True:
 
     cv2.imshow("Gri", gray)
     # Gri tonlamaya dönüştürdüğümüz görüntüyü ayrı bir pencerede gösterir.
-
-
-    cv2.imshow("Gaussian Blur", blur)
-    # Gaussian Blur uygulanmış görüntüyü ayrı pencerede gösterir.
 
 
     if cv2.waitKey(1) & 0xFF == ord("q"):
