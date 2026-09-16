@@ -6,3 +6,5 @@ __pycache__/
 .vscode/
 
 C++/grayscale
+C++/blur
+C++/average_blur
