@@ -2,9 +2,7 @@
 #include <algorithm>
 #include <opencv2/opencv.hpp>
 
-cv::Mat kendiBlurAlgoritmamiz(
-    const cv::Mat &goruntu,
-    int kernelBoyutu)
+cv::Mat kendiBlurAlgoritmamiz(const cv::Mat &goruntu, int kernelBoyutu)
 {
     if (kernelBoyutu % 2 == 0)
     {
@@ -113,5 +111,5 @@ int main()
 
     kamera.release();
     cv::destroyAllWindows();
-    q return 0;
+    return 0;
 }

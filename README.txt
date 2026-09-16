@@ -140,12 +140,141 @@ Run:
 
 Press `q` while the camera window is active to close the application.
 
+
+## Average Blur Implementations
+
+Average Blur replaces each pixel with the average value of its neighboring pixels. It is used to smooth images, reduce small details, and suppress noise.
+
+The filter is implemented using the same three-stage learning approach.
+
+### 1. Python with OpenCV
+
+File:
+
+```text
+opencv/average_blur.py
+```
+
+This version uses OpenCV's optimized Average Blur function:
+
+```python
+blurred_image = cv2.blur(image, (5, 5))
+```
+
+The `(5, 5)` parameter defines a 5×5 kernel containing 25 pixels.
+
+### 2. Manual Python Implementation
+
+File:
+
+```text
+python/average_blur.py
+```
+
+This version manually moves a kernel over every pixel in the image.
+
+For each pixel:
+
+1. Select the surrounding kernel region
+2. Calculate the average Blue, Green, and Red values
+3. Write the calculated values to the output image
+
+The output image is initialized with:
+
+```python
+blurred_image = np.zeros_like(image)
+```
+
+Image borders are extended using:
+
+```python
+np.pad(image, ..., mode="edge")
+```
+
+This repeats the nearest border pixels so that a complete kernel can also be applied to pixels located at the image boundaries.
+
+### 3. Manual C++ Implementation
+
+File:
+
+```text
+C++/average_blur.cpp
+```
+
+This version manually iterates over the image and kernel using C++ loops.
+
+The Blue, Green, and Red values are accumulated separately:
+
+```cpp
+totalB += pixel[0];
+totalG += pixel[1];
+totalR += pixel[2];
+```
+
+The channel averages are calculated with:
+
+```text
+Average channel value = Channel sum / Number of kernel pixels
+```
+
+For a 5×5 kernel:
+
+```text
+Number of pixels = 5 × 5 = 25
+```
+
+Instead of creating a physically padded image, the C++ implementation uses `std::clamp()` to redirect out-of-range coordinates to the nearest valid border pixel:
+
+```cpp
+int neighborX = std::clamp(
+    x + kernelX,
+    0,
+    image.cols - 1
+);
+```
+
+This produces edge-replication behavior without allocating an additional padded image.
+
+### Average Blur Kernel
+
+A 3×3 Average Blur kernel can be represented as:
+
+```text
+1/9 ×
+[ 1  1  1 ]
+[ 1  1  1 ]
+[ 1  1  1 ]
+```
+
+All neighboring pixels have equal weight.
+
+Larger kernels create stronger blur:
+
+```text
+3×3   → Light blur
+5×5   → Medium blur
+15×15 → Strong blur
+```
+
+### What Was Learned
+
+* Kernel-based image processing
+* Neighborhood operations
+* Average filtering
+* Border handling
+* NumPy slicing and `np.mean()`
+* Image padding with `np.pad()`
+* Coordinate limiting with `std::clamp()`
+* Separate accumulation of BGR channels
+* Differences between Python loops, C++ loops, and optimized OpenCV functions
+
+
 ## Learning Roadmap
 
 The following image processing topics will be studied using the same three-stage approach:
 
 * [x] Grayscale conversion
-* [ ] Average blur
+* [X] Average blur
 * [ ] Gaussian blur
 * [ ] Thresholding
 * [ ] Edge detection
